@@ -20,7 +20,7 @@
    ```
 
 ### nginx配置
-http://www.jinzhaohui.cn/?p=914
+<a href="http://www.jinzhaohui.cn/?p=914" target="blank">查看</a>
 
 ![Aaron Swartz](http://www.jinzhaohui.cn/wp-content/uploads/2021/08/截屏2021-08-01-下午10.07.48-1024x914.png)
 
