@@ -6,11 +6,10 @@
 需要播放网络视频的，请绕道，谢谢。
 
 ### 解决
-解决视频投屏的关键时刻转圈问题，哈哈。
-将本地电脑作为主机，供wifi下其他终端随时访问。
+将本地电脑作为主机，供wifi下其他终端随时访问，解决视频投屏的关键时刻转圈问题，哈哈。
 
 ### node与nginx分工
-1. nodejs根据指定的文件夹，递归生成html文件（总导航文件、详情文件）。
+1. nodejs根据指定的文件夹，递归生成html文件（总导航文件、详情文件），每次生成会自动创建文件夹、更换html。
 2. nginx配置重定向网络，访问nodejs生成的html文件，来实现视频播放。
 
 ### 使用
@@ -23,6 +22,6 @@
 ### nginx配置
 http://www.jinzhaohui.cn/?p=914
 
-http://www.jinzhaohui.cn/wp-content/uploads/2021/08/截屏2021-08-01-下午10.07.48-1024x914.png
+![Aaron Swartz](http://www.jinzhaohui.cn/wp-content/uploads/2021/08/截屏2021-08-01-下午10.07.48-1024x914.png)
 
-http://www.jinzhaohui.cn/wp-content/uploads/2021/08/截屏2021-08-01-下午10.12.19-1024x729.png
+![Aaron Swartz](http://www.jinzhaohui.cn/wp-content/uploads/2021/08/截屏2021-08-01-下午10.12.19-1024x729.png)
