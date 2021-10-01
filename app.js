@@ -9,7 +9,7 @@ var fs = require('fs');
 var path = require('path');
 const readFile = require("util").promisify(fs.readFile);
 var htmlBody = '';
-const htmlDetailAccessIpPort = 'http://192.168.0.1:9123';
+const htmlDetailAccessIpPort = 'http://192.168.1.5:10982';//外部访问视频文件ip
 
 /**
  2.获取服务器对象
@@ -59,11 +59,18 @@ server.on('request', function (request, response) {
         readFle(response, './index.html');
     } else if (url === '/index') {
         readFle(response, './index.html');
-    } else if (url === '/init_jyls') {
-        var htmlPath = 'jyls.html';//总导航html
-        var htmlDetailPath = 'jyls_detail';//相对路径
-        var filesPath = "jyls";//指定文件夹名称
-        var filesParentPath = "/Users/tim/Desktop/images";//指定文件夹前的绝对路径
+    } else if (url === '/init_asd') {
+        var htmlPath = 'asd.html';//总导航html
+        var htmlDetailPath = 'asd_detail';//相对路径
+        var filesPath = "asd";//指定文件夹名称
+        var filesParentPath = "/media/sf_vbox-w/files";//指定文件夹前的绝对路径
+        htmlBody = '';
+        explorer(response, filesPath, filesParentPath, htmlPath, htmlDetailPath);
+    } else if (url === '/init_film') {
+        var htmlPath = 'film.html';//总导航html
+        var htmlDetailPath = 'film_detail';//相对路径
+        var filesPath = "film";//指定文件夹名称
+        var filesParentPath = "/media/sf_vbox-w/files";//指定文件夹前的绝对路径
         htmlBody = '';
         explorer(response, filesPath, filesParentPath, htmlPath, htmlDetailPath);
     } else {
@@ -132,7 +139,7 @@ function mkdirs(dirname, callback) {
             callback();
         } else {
             // 递归调用mkdirs
-            /*console.log(dirname);  
+            /*console.log(dirname);
             console.log(path.dirname(dirname)); */
             mkdirs(path.dirname(dirname), function () {
                 fs.mkdir(dirname, callback);
@@ -215,11 +222,10 @@ function explorerDetail(response, filesPath, filesParentPath, detailPath, file) 
         //路径原则是：此处为相对路径。生成的html文件将由nginx打开，nginx包含视频文件所在的目录
         //html存放视频文件所在路径
         var filePath = htmlDetailAccessIpPort + '/' + filesPath + '/' + file
-        var htmlDetailBody = '<div>' + '<p>' + file + '</p>' + '<div/><video src="' + filePath + '" controls="controls" height="100" width="200" >videos</video></div>' + '</div>\n';
+        var htmlDetailBody = '<div>' + '<p>' + file + '</p>' + '<div/><video src="' + filePath + '" controls="controls" height="500" width="700" >videos</video></div>' + '</div>\n';
         writerHtml(response, htmlDetailBody, filesParentPath + '/' + detailPath);
     }
 }
-
 
 function explorerDetail___d(response, filesPath, filesParentPath, htmlPath, htmlDetailPath) {
     fs.readdir(filesPath, function (err, files) {
@@ -250,7 +256,7 @@ function explorerDetail___d(response, filesPath, filesParentPath, htmlPath, html
                         //html存放视频文件所在路径
                         // var filePath = filesPath.slice(filesParentPath.length + 1, filesPath.length) + '/' + file
 
-                        htmlBody = htmlBody + '<div>' + '<p>' + file + '</p>' + '<div/><video src="' + filePath + '" controls="controls" height="100" width="200" >videos</video></div>' + '</div>\n';
+                        htmlBody = htmlBody + '<div>' + '<p>' + file + '</p>' + '<div/><video src="' + filePath + '" controls="controls" height="500" width="700" >videos</video></div>' + '</div>\n';
                     }
                     if (htmlBody.length > 0 && doneFilesNum == files.length - 1) {
                         writerHtml(response, htmlBody, htmlPath);
@@ -260,19 +266,3 @@ function explorerDetail___d(response, filesPath, filesParentPath, htmlPath, html
         });
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
