@@ -188,8 +188,8 @@ function explorer(response, filesPath, filesParentPath, htmlPath, htmlDetailPath
                     // 如果是文件夹遍历
                     explorer(response, filesPath + '/' + file, filesParentPath, htmlPath, htmlDetailPath);
                 } else {
-                    console.log('文件名:' + filesParentPath + '/' + filesPath + '/' + file);
                     if (file.indexOf(".mp4") != -1) {
+                    	console.log('mp4文件名:' + filesParentPath + '/' + filesPath + '/' + file);
                         //路径原则是：此处为相对路径。生成的html文件将由nginx打开，nginx包含视频文件所在的目录
                         mkdirs(filesParentPath + '/' + htmlDetailPath, (data) => {
                             //如果文件已存在
@@ -205,7 +205,9 @@ function explorer(response, filesPath, filesParentPath, htmlPath, htmlDetailPath
                         var detailPath = htmlDetailPath + '/' + filesPath + '_' + file.replace(/.mp4/, "") + '.html'
                         //html存放视频文件所在路径
                         explorerDetail(response, filesPath, filesParentPath, detailPath, file);
-                        htmlBody = htmlBody + '<div>' + '<p>' + file + '</p>' + '    <a href="' + detailPath + '" target="blank" >详情看一看吧~</a>' + '</div>\n';
+                        htmlBody = htmlBody + '<div>' + '<p>' + filesPath + '/' + file + '</p>' + '    <a href="' + detailPath + '" target="blank" >详情看一看吧~</a>' + '</div>\n';
+                    } else {
+                        console.log('文件名:' + filesParentPath + '/' + filesPath + '/' + file);
                     }
                     if (htmlBody.length > 0 && doneFilesNum == files.length - 1) {
                         writerHtml(response, htmlBody, filesParentPath + '/' + htmlPath);
@@ -227,42 +229,3 @@ function explorerDetail(response, filesPath, filesParentPath, detailPath, file) 
     }
 }
 
-function explorerDetail___d(response, filesPath, filesParentPath, htmlPath, htmlDetailPath) {
-    fs.readdir(filesPath, function (err, files) {
-        //err 为错误 , files 文件名列表包含文件夹与文件
-        if (err) {
-            console.log('error:\n' + err);
-            return;
-        }
-
-        var doneFilesNum = 0
-        files.forEach(function (file, index) {
-            fs.stat(filesPath + '/' + file, function (err, stat) {
-                doneFilesNum++
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                if (stat.isDirectory()) {
-                    // 如果是文件夹遍历
-                    explorer(response, filesPath + '/' + file, filesParentPath, htmlPath, htmlDetailPath);
-                } else {
-                    console.log('文件名:' + filesPath + '/' + file);
-                    if (file.indexOf(".mp4") != -1) {
-                        //路径原则是：此处为相对路径。生成的html文件将由nginx打开，nginx包含视频文件所在的目录
-
-                        //存放视频文件详情html路径  detial路径/路径_fileName.html
-                        var filePath = htmlDetailPath + '/' + filesPath.slice(filesParentPath.length + 1, filesPath.length) + '_' + file.replace(/.mp4/, "") + '.html'
-                        //html存放视频文件所在路径
-                        // var filePath = filesPath.slice(filesParentPath.length + 1, filesPath.length) + '/' + file
-
-                        htmlBody = htmlBody + '<div>' + '<p>' + file + '</p>' + '<div/><video src="' + filePath + '" controls="controls" height="500" width="700" >videos</video></div>' + '</div>\n';
-                    }
-                    if (htmlBody.length > 0 && doneFilesNum == files.length - 1) {
-                        writerHtml(response, htmlBody, htmlPath);
-                    }
-                }
-            });
-        });
-    });
-}
